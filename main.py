@@ -5,6 +5,7 @@ import Api_key
 import Translate_tatar as Tt
 
 bot = telebot.TeleBot(Api_key.API_KEY)
+states = {}
 
 
 @bot.message_handler(commands=['start'])
@@ -14,56 +15,69 @@ def start_command(message):
 
 @bot.message_handler(commands=['tat2rus'])
 def tat2rus(message):
-    text = message.text.split(' ', 1)
-    try:
-        if len(text) == 2:
-            request: str = Tt.translate_tat2rus(str(text[1]))
-            if request.find("<res>") == 0:
-                data: dict = Tt.prettify_result(request)
-                bot.send_message(message.chat.id, Tt.decorated_result(data))
-            else:
-                bot.send_message(message.chat.id, request)
-        else:
-            bot.send_message(message.chat.id, "Enter word or proposal")
-            bot.register_next_step_handler(message, tat2rus_2)
-    except Exception:
-        bot.send_message(message.chat.id, "You entered the wrong value. Enter the /tat2rus command again")
-
-
-def tat2rus_2(message):
-    request: str = Tt.translate_tat2rus(str(message.text))
-    if request.find("<res>") == 0:
-        data: dict = Tt.prettify_result(request)
-        bot.send_message(message.chat.id, Tt.decorated_result(data))
+    chat_id = message.chat.id
+    if chat_id in states and states[chat_id] == 'tat2rus':
+        bot.send_message(message.chat.id, "The command are already being executed, write a word or sentence")
     else:
-        bot.send_message(message.chat.id, request)
+        states[chat_id] = 'tat2rus'
+        bot.send_message(message.chat.id, "Enter word or proposal")
 
 
 @bot.message_handler(commands=['rus2tat'])
 def rus2tat(message):
-    text = message.text.split(' ', 1)
-    try:
-        if len(text) == 2:
-            request: str = Tt.translate_rus2tat(str(text[1]))
+    chat_id = message.chat.id
+    if chat_id in states and states[chat_id] == 'rus2tat':
+        bot.send_message(message.chat.id, "The command are already being executed, write a word or sentence")
+    else:
+        states[chat_id] = 'rus2tat'
+        bot.send_message(message.chat.id, "Enter word or proposal")
+
+
+@bot.message_handler(commands=['cancel'])
+def cancel(message):
+    chat_id = message.chat.id
+    if chat_id in states and states[chat_id] == 'rus2tat':
+        del states[chat_id]
+        bot.send_message(message.chat.id, "Cancel operation")
+    elif chat_id in states and states[chat_id] == 'tat2rus':
+        del states[chat_id]
+        bot.send_message(message.chat.id, "Cancel operation")
+    else:
+        bot.send_message(message.chat.id, "There are no actions to cancel.")
+
+
+@bot.message_handler(commands=['M'])
+def cancel(message):
+    bot.send_message(message.chat.id, str(states))
+
+
+@bot.message_handler(func=lambda message: True)
+def handle_messages(message):
+    chat_id = message.chat.id
+    if chat_id in states and states[chat_id] == 'rus2tat':
+        try:
+            text: str = message.text
+            request: str = Tt.translate_rus2tat(text)
             if request.find("<res>") == 0:
                 data: dict = Tt.prettify_result(request)
                 bot.send_message(message.chat.id, Tt.decorated_result(data))
             else:
                 bot.send_message(message.chat.id, request)
-        else:
-            bot.send_message(message.chat.id, "Enter word or proposal")
-            bot.register_next_step_handler(message, rus2tat_2)
-    except Exception:
-        bot.send_message(message.chat.id, "You entered the wrong value. Enter the /tat2rus command again")
-
-
-def rus2tat_2(message):
-    request: str = Tt.translate_rus2tat(str(message.text))
-    if request.find("<res>") == 0:
-        data: dict = Tt.prettify_result(request)
-        bot.send_message(message.chat.id, Tt.decorated_result(data))
+        except Exception:
+            bot.send_message(message.chat.id, "You entered the wrong value. Enter the /cancel command again")
+    elif chat_id in states and states[chat_id] == 'tat2rus':
+        try:
+            text: str = message.text
+            request: str = Tt.translate_tat2rus(text)
+            if request.find("<res>") == 0:
+                data: dict = Tt.prettify_result(request)
+                bot.send_message(message.chat.id, Tt.decorated_result(data))
+            else:
+                bot.send_message(message.chat.id, request)
+        except Exception:
+            bot.send_message(message.chat.id, "You entered the wrong value. Enter the /cancel command again")
     else:
-        bot.send_message(message.chat.id, request)
+        bot.send_message(message.chat.id, "Unknown command")
 
 
 while True:
