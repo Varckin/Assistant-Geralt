@@ -18,7 +18,7 @@ def translate_tat2rus(word: str = ""):
     return response.content.decode("utf-8")
 
 
-def prettify_result(result):
+def prettify_result(result: str):
     data_parse = dict()
     soup = BeautifulSoup(result, 'html.parser')
 
@@ -47,6 +47,7 @@ def prettify_result(result):
     data_parse["mt"] = tmp.text if tmp else None
 
     return data_parse
+
 
 def decorated_result(result: dict):
     translate: str = ""
