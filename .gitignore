@@ -1,2 +1,5 @@
 .git/
+.idea/
+venv/
+__pycache__/
 Api_key.py
