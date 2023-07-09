@@ -1,3 +1,5 @@
+"""Use Python 3.11"""
+
 from json import loads
 from urllib.parse import quote
 from urllib.request import urlopen
