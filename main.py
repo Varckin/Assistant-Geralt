@@ -50,6 +50,8 @@ def help_command(message):
 /current_weather - shows the current weather.
 /tat2rus - translate tatar to russian.
 /rus2tat - translate russian to tatar.
+/translate - translate word or or proposal.
+/change_language - change language translate.
 /help - displays information about commands.
 /about - displays information about the bot.
 /cancel - Cancel all commands
