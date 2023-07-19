@@ -2,4 +2,6 @@
 .idea/
 venv/
 __pycache__/
+resourse/
+*.base
 Api_key.py
