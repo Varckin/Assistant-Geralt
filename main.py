@@ -79,7 +79,8 @@ def help_command(message):
 /rus2tat - translate russian to tatar.
 /translate - translate word or or proposal.
 /change_language - change language translate.
-/generator - generator passcode
+/generator - generator passcode.
+/gallows - game gallows.
 /help - displays information about commands.
 /about - displays information about the bot.
 /cancel - Cancel all commands
@@ -392,9 +393,21 @@ def handle_messages(message):
 
         if tries[chat_id] == 0:
             bot.send_message(message.chat.id, f"You've lost! The hidden word was: {word[chat_id]}")
+            del tries[chat_id]
+            del word[chat_id]
+            del guessed_word[chat_id]
+            del guessed_letters[chat_id]
+            del guess[chat_id]
+            del states[chat_id]
 
         if guessed_word[chat_id] == word[chat_id]:
             bot.send_message(message.chat.id, "Congratulations! You've won!")
+            del tries[chat_id]
+            del word[chat_id]
+            del guessed_word[chat_id]
+            del guessed_letters[chat_id]
+            del guess[chat_id]
+            del states[chat_id]
     else:
         bot.send_message(message.chat.id, "Unknown command")
 
