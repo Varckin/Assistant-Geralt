@@ -1,11 +1,9 @@
 """Use Python 3.11"""
 
 import sqlite3
-import random
-import string
-
 
 name_base: str = 'data_base.base'
+
 create_tables: str = '''
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY,
@@ -30,9 +28,3 @@ def create_table():
 
 
 create_table()
-
-
-def generate_password(length: int):
-    characters: str = string.ascii_letters + string.digits + string.punctuation
-    password: str = ''.join(random.choice(characters) for _ in range(length))
-    return password
