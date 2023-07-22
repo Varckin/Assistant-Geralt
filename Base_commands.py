@@ -44,4 +44,4 @@ def help_command(message):
 @bot.message_handler(commands=['about'])
 def about_command(message):
     bot.send_message(message.chat.id, "Creator: [Markus Varckin](t.me/Varckin)\n"
-                                      "Version: 2.12\nBuild: 189", parse_mode="Markdown")
+                                      "Version: 2.17\nBuild: 203", parse_mode="Markdown")

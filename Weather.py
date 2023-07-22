@@ -133,7 +133,6 @@ def weather_png_command(message):
 
 @bot.message_handler(func=lambda message: (states.get(message.chat.id) in ['weather', 'current_weather', 'weather_png']
                                            and message.text not in all_commands))
-
 def else_message_weather(message):
     chat_id = message.chat.id
     if chat_id in states and states[chat_id] == 'current_weather':
