@@ -3,6 +3,7 @@ from Weather import city_dic
 from Translate import lang_dic
 from Gallows import tries, word, guessed_word, guessed_letters, guess
 from Generator import length_password
+from Anonim_Mail import email
 
 
 @bot.message_handler(commands=['cancel'])
@@ -40,6 +41,10 @@ def cancel(message):
         del guessed_word[chat_id]
         del guessed_letters[chat_id]
         del guess[chat_id]
+        del states[chat_id]
+        bot.send_message(message.chat.id, "Cancel operation")
+    elif chat_id in states and states[chat_id] == 'anonim_mail':
+        del email[chat_id]
         del states[chat_id]
         bot.send_message(message.chat.id, "Cancel operation")
     else:
