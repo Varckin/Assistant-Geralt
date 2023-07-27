@@ -34,6 +34,7 @@ def help_command(message):
 /change_language - change language translate.
 /generator - generator passcode.
 /gallows - game gallows.
+/anonim_mail - random anonim email.
 /help - displays information about commands.
 /about - displays information about the bot.
 /cancel - Cancel all commands
